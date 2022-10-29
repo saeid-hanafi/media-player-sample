@@ -2,6 +2,7 @@ package ir.fbscodes.musicplayer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Music {
     private int id;
@@ -99,5 +100,11 @@ public class Music {
         list.add(music4);
 
         return list;
+    }
+
+    public static String convertMilliSecond(long milliSecond) {
+        long second = (milliSecond / 1000) % 60;
+        long minute = (milliSecond / (1000 * 60)) % 60;
+        return String.format(Locale.US, "%02d:%02d", minute, second);
     }
 }
