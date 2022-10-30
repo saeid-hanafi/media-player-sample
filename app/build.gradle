@@ -50,4 +50,5 @@ dependencies {
 
     // For WebP support, without animations
     implementation 'com.facebook.fresco:webpsupport:2.6.0'
+    implementation 'com.airbnb.android:lottie-compose:5.2.0'
 }

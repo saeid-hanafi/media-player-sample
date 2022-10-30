@@ -20,6 +20,7 @@ import ir.fbscodes.musicplayer.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity implements MusicAdapter.onChangeMusicListener {
     private static final String TAG = "MainActivity";
+    private MusicAdapter musicAdapter;
     private ActivityMainBinding binding;
     private MediaPlayer mediaPlayer;
     private MediaStatus mediaStatus;
@@ -42,7 +43,8 @@ public class MainActivity extends AppCompatActivity implements MusicAdapter.onCh
         musicList = Music.getMusicList();
         RecyclerView recyclerView = binding.playListRv;
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        recyclerView.setAdapter(new MusicAdapter(musicList, this));
+        musicAdapter = new MusicAdapter(musicList, this);
+        recyclerView.setAdapter(musicAdapter);
 
         onChangeMusic(musicList.get(cursor));
         binding.playSiv.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +103,8 @@ public class MainActivity extends AppCompatActivity implements MusicAdapter.onCh
     }
 
     public void onChangeMusic(Music music) {
+        binding.musicSlider.setValue(0);
+        musicAdapter.changeMusic(music);
         mediaPlayer = MediaPlayer.create(this, music.getMusic());
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
