@@ -18,7 +18,7 @@ import java.util.TimerTask;
 
 import ir.fbscodes.musicplayer.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MusicAdapter.onChangeMusicListener {
     private static final String TAG = "MainActivity";
     private ActivityMainBinding binding;
     private MediaPlayer mediaPlayer;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         musicList = Music.getMusicList();
         RecyclerView recyclerView = binding.playListRv;
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        recyclerView.setAdapter(new MusicAdapter(musicList));
+        recyclerView.setAdapter(new MusicAdapter(musicList, this));
 
         onChangeMusic(musicList.get(cursor));
         binding.playSiv.setOnClickListener(new View.OnClickListener() {
@@ -142,9 +142,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void nextToMusic() {
-        timer.cancel();
-        timer.purge();
-        mediaPlayer.release();
+        clear();
         if (cursor < musicList.size() - 1)
             cursor++;
         else
@@ -153,9 +151,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void previousToMusic() {
-        timer.cancel();
-        timer.purge();
-        mediaPlayer.release();
+        clear();
         if (cursor > 0)
             cursor--;
         else
@@ -166,9 +162,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        clear();
+        mediaPlayer = null;
+    }
+
+    @Override
+    public void onClick(Music music, int pos) {
+        if (pos > -1 && pos != cursor) {
+            clear();
+            onChangeMusic(music);
+        }
+    }
+
+    private void clear() {
         timer.cancel();
         timer.purge();
         mediaPlayer.release();
-        mediaPlayer = null;
     }
 }

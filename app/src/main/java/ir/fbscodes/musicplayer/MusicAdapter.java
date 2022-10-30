@@ -14,9 +14,11 @@ import java.util.List;
 
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHolder> {
     private List<Music> musicList;
+    private onChangeMusicListener onChangeMusicListener;
 
-    public MusicAdapter(List<Music> musicList) {
+    public MusicAdapter(List<Music> musicList, onChangeMusicListener onChangeMusicListener) {
         this.musicList = musicList;
+        this.onChangeMusicListener = onChangeMusicListener;
     }
     @NonNull
     @Override
@@ -52,7 +54,24 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
             songImg.setActualImageResource(music.getSongImg());
             songText.setText(music.getSong());
             artistText.setText(music.getArtist());
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onChangeMusicListener.onClick(music, getAdapterPosition());
+                }
+            });
         }
     }
 
+    public void changeMusic(Music music) {
+        int index = musicList.indexOf(music);
+        if (index > -1) {
+
+        }
+    }
+
+    public interface onChangeMusicListener {
+        void onClick(Music music, int pos);
+    }
 }
