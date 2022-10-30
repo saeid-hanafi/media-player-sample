@@ -173,6 +173,7 @@ public class MainActivity extends AppCompatActivity implements MusicAdapter.onCh
     @Override
     public void onClick(Music music, int pos) {
         if (pos > -1 && pos != cursor) {
+            cursor = pos;
             clear();
             onChangeMusic(music);
         }
